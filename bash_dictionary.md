@@ -3,13 +3,13 @@
 
 ```
 
-## Changing Directories 
-# cd /DOCUMENTS/BTEC 
+# Changing Directories 
+## cd /DOCUMENTS/BTEC 
 
-## To list files and directories 
-# ls 
+# To list files and directories 
+## ls 
 
-## To create a new directory called results: 
-# mkdir results 
+# To create a new directory called results: 
+## mkdir results 
 
 ```

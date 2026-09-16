@@ -74,9 +74,9 @@ Paste your code below:
 
 ```bash
 #Paste here:
-
-
-
+ 
+ cd btec_640/class_exercises/
+ mkdir -p sept_14_exercise
 
 
 
@@ -171,7 +171,10 @@ Forget about the command line, what is the logical workflow or syntax that you w
 ```
 Type your answer:
 
-Step 1:
+Step 1: Select Chromosome 21 
+Step 2: Select for Protein Coding Genes
+Step 3: Print name of genes 
+Step 4: Print for accession numbers matching each gene name 
 
 
 
@@ -218,7 +221,7 @@ grep -c "chr21" hg38.ncbiRefSeq.gtf
 ```
 Type your answer:
 
-
+52142
 ```
 
 
@@ -234,7 +237,7 @@ grep "chr21" hg38.ncbiRefSeq.gtf > chr21.gtf
 ```
 Type your answer:
 
-
+Saves the number of instances of "chr21" instead of saving the information for each instance.
 
 
 
@@ -246,7 +249,7 @@ Type your answer:
 ```
 Type your answer:
 
-
+Column Nine 
 
 
 ```
@@ -345,7 +348,7 @@ gene_id "LSS"; transcript_id "NM_001145436.2"; exon_number "17"; exon_id "NM_001
 ```
 Type your answer:
 
-
+Divide infomation by semicolon/tab/quotations
 
 
 

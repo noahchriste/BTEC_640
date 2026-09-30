@@ -15,6 +15,7 @@
 #   6. Remove unneeded information 
 #   7. Download the new filtered sequence data. 
 
+# USAGE: bash Christe_download_chr21.sh
 
 # 1. Move and make working directories
 cd btec_640/class_exercises/ # Move directory

@@ -179,8 +179,9 @@ Do it using a single command line.
 ```bash
 #Paste your command here:
 
+mkdir -p btec_640/class_exercise/21_sept_exercise
 
-
+mkdir -p btec_640/class_exercise/21_sept_exercise/input_data
 
 ```
 
@@ -223,13 +224,16 @@ Move inside your `input_data` directoy.
 **Answer**:
 ```bash
 #Paste your command here:
-
-
+pwd 
+cd 21_sept_exercise
+cd input_data
 
 
 #Paste your terminal output below:
 
-
+bash-3.2$ pwd
+/Users/nchriste/Documents/btec_640/class_exercises/21_sept_exercise
+bash-3.2$ cd input_data/
 
 
 ```
@@ -269,7 +273,7 @@ Let's do this step by step:
 ```bash
 #Type your answer below:
 
-
+Specifying the >Input_File would only read the one file that is specificied and not all the files in the directory
 
 
 ```
@@ -326,7 +330,7 @@ Print the first **5 lines** of both fasta files, `ecoli_genomic.fna` and `ecoli_
 ```
 Type your answer here:
 
-
+The genomic (fna) file is full of nucleotides and the protein (faa) file is full of amino acids. 
 
 
 ```
@@ -345,7 +349,7 @@ In a FASTA file, `>` marks the beginning of a header line (or ID/description lin
 ```
 Type your answer:
 
-
+The genomic file has 1 count and the protein file has 4300 counts. 
 
 
 ```
@@ -361,7 +365,7 @@ Always quote special characters like `>`, `*`, `$` when you mean them literally.
 ```
 Type your answer:
 
-
+The genomic data is the one genome of the E. coli. There are mulitple proteins encoded in the genome in the protein file. 
 
 
 ```
@@ -374,7 +378,9 @@ Using `grep`, print only the headers and save them in a new file name `ecoli_gen
 ```bash
 Paste your commands here
 
+grep ">" ecoli_genomic.fna > ecoli_genome_header.txt
 
+grep ">" ecoli_protein.faa > ecoli_protein_headers.txt
 
 
 
@@ -398,29 +404,31 @@ With `grep` print and save in a new file the annotation for **b3494** gene for e
 ```
 1. Paste the commands that you used to print and generate the files:
 
+grep b3494 ecoli.gff > b3494.gff
 
+grep b3494 ecoli.gtf > b3494.gtf
 
 
 2. Which are the b3494 gene coordinates in our E. coli genome? locate this information in both files and write down your findings:
 
 b3494.gff file:
-
+3639385 3639720
 
 b3494.gtf file:
-
+3639385 3639720
 
 
 3. How many exons does this gene have? And describe where did you find this information.
 
 b3494.gff file:
 
-
+not in the file
 
 
 
 b3494.gtf file:
 
-
+exon_number "1"
 
 
 
@@ -430,16 +438,17 @@ b3494.gtf file:
 
 b3494.gff file:
 
+UniProtKB/Swiss-Prot:P0A8S5
 
 b3494.gtf file:
 
-
+"UniProtKB/Swiss-Prot:P0A8S5"
 
 5. Go to the Uniprot website (https://www.uniprot.org/) using the Uniprot ID that you found,  look for the name and function of this protein:
 
+Universal stress protein B 
 
-
-
+Overexpression of uspB causes cell death in stationary phase
 
 ```
 
@@ -487,7 +496,7 @@ Go to this directory: `shell_data/untrimmed_fastq/`
 ```
 Type your answer
 
-
+The new file is small raw reads and the quality read. 
 
 
 
@@ -502,7 +511,18 @@ Type you answer here:
 (Copy the beginning of each line an explain what information provides)
 
 
+@SRR097977.1 209DTAAXX_Lenski2_1_7:8:3:710:178 length=36
+TATTCTGCCATAATGAAATTCGCCACTTGTTAGTGT
++SRR097977.1 209DTAAXX_Lenski2_1_7:8:3:710:178 length=36
+CCCCCCCCCCCCCCC>CCCCC7CCCCCCACA?5A5<
+@SRR097977.2 209DTAAXX_Lenski2_1_7:8:3:365:371 length=36
+GGTTACTCTTTTAACCTTGATGTTTCGACGCTGTAT
++SRR097977.2 209DTAAXX_Lenski2_1_7:8:3:365:371 length=36
+CC:?:CC:?CCCCC??C?:?C-&:C:,?<&*?+7?<
+@SRR097977.3 209DTAAXX_Lenski2_1_7:8:3:663:569 length=36
+TTGTTCGCTTTTGGTAATTAATCCCGGAAATAATAA
 
+These are the raw reads and the quality reads. 
 
 
 

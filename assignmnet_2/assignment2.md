@@ -79,7 +79,7 @@ mkdir -p assignment_2
 cd assignment_2
 pwd
 ls
-mkdir -p input-data
+mkdir -p input_data
 mkdir -p final_output
 mkdir -p analysis 
 mkdir -p src 
@@ -87,9 +87,7 @@ ls
 cd analysis
 pwd 
 ls 
-mkdir -p gene survey 
-mkdir -p proteins
-mkdir -p blast 
+mkdir -p {gene_survey, proteins, blast}
 ls 
 
 
@@ -176,10 +174,10 @@ pwd
 cd analysis_data/gene_survey
 pwd
 ls
-ln -s /Users/nchriste/Documents/btec_640/assignment_2/input_data/chicken.gtf /Users/nchriste/Documents/btec_640/assignment_2/analysis/gene_survey/
-ln -s /Users/nchriste/Documents/btec_640/assignment_2/input_data/frog.gtf /Users/nchriste/Documents/btec_640/assignment_2/analysis/gene_survey/
-ln -s /Users/nchriste/Documents/btec_640/assignment_2/input_data/mouse.gtf /Users/nchriste/Documents/btec_640/assignment_2/analysis/gene_survey/
-ln -s /Users/nchriste/Documents/btec_640/assignment_2/input_data/zebrafish.gtf /Users/nchriste/Documents/btec_640/assignment_2/analysis/gene_survey/
+ln -s ../input_data/chicken.gtf analysis/gene_survey/
+ln -s ../input_data/frog.gtf analysis/gene_survey/
+ln -s ../input_data/mouse.gtf analysis/gene_survey/
+ln -s ../input_data/zebrafish.gtf analysis/gene_survey/
 ls
 
 
@@ -308,23 +306,24 @@ Repeat Exercise 5 for **all five genes in mouse and in chicken**. That is 10 `gr
 
 | Gene | Species | Found? (Y/N) | Chromosome/sequence | Start | End |
 |---|---|---|---|---|---|
-| TP53 | mouse | | | | |
-| AIM2 | mouse | | | | |
-| TLR9 | mouse | | | | |
-| TLR21 | mouse | | | | |
-| GULO | mouse | | | | |
-| TP53 | chicken | | | | |
-| AIM2 | chicken | | | | |
-| TLR9 | chicken | | | | |
-| TLR21 | chicken | | | | |
-| GULO | chicken | | | | |
+| TP53 | mouse |N| | | |
+| AIM2 | mouse |Y|NC_00067.7|173177105|173293606|
+| TLR9 | mouse |Y|NC_00075.7|106099797|106104075|
+| TLR21 | mouse |N | | | |
+| GULO | mouse |Y|NC_000080.7|66224235|66246703|
+| TP53 | chicken |Y|NW_024096016.1|5925|24899|
+| AIM2 | chicken |N| | | |
+| TLR9 | chicken |N| | | |
+| TLR21 | chicken |Y|NC_052542.1
+|308996|335580|
+| GULO | chicken |N| | | |
 
 :question: Imagine doing this for 20,000 genes in 50 species. Which part of what you just did was **exactly the same** every time, and which part **changed**?
 
 ```
 Type your answer:
 
-
+grep -i "gene_id" stayed the same and the gene name and species were the two variables that changed
 
 
 ```
@@ -334,7 +333,7 @@ Type your answer:
 ```
 Type your answer:
 
-
+define the variables for "GENE_NAME" and "SPECIES" then write a loop to read every "GENE_NAME" in each "SPECIES"'s genome
 
 
 ```
@@ -361,7 +360,8 @@ You already know the `for` loop. Now we need **two** loops, one inside the other
 ```
 Type your answer:
 
-
+The for SPECIES loop is saying to look through each SPECIES's genome 
+The for GENE loop is reading each gene in each of the SPECIES"S genome. The for GENE loop will run under each SPECIES specified under the for SPECIES loop. The COMMAND will tell us what to do for each GENE found in each SPECIES.
 
 
 
@@ -398,12 +398,12 @@ do
     do
         grep -i "gene_id \"${GENE}\";" ${SPECIES}.gtf > ${GENE}_${SPECIES}.gtf
 
-        if [ ________________ ]
+        if [ ${GENE}_${SPECIES}.gtf ]
         then
             echo "${GENE} ${SPECIES} FOUND"
         else
             echo "${GENE} ${SPECIES} NOT_FOUND"
-            rm ________________
+            rm ${GENE}_${SPECIES}.gtf
         fi
     done
 done > gene_survey.txt
@@ -417,6 +417,7 @@ done > gene_survey.txt
 ```
 Type your answer:
 
+A Bunch of empty files would be present and could cause many issues later on
 
 
 ```
@@ -425,11 +426,11 @@ Open `gene_survey.txt` and copy the results into the table:
 
 | Gene | mouse | chicken | frog | zebrafish |
 |---|---|---|---|---|
-| TP53 | | | | |
-| AIM2 | | | | |
-| TLR9 | | | | |
-| TLR21 | | | | |
-| GULO | | | | |
+| TP53 | NOT_FOUND | FOUND | FOUND | FOUND |
+| AIM2 | FOUND | NOT_FOUND | NOT_FOUND | NOT_FOUND |
+| TLR9 | FOUND | NOT_FOUND | FOUND | FOUND |
+| TLR21 | NOT_FOUND | FOUND | FOUND | FOUND |
+| GULO | FOUND | NOT_FOUND | NOT_FOUND | NOT_FOUND  |
 
 
 ## :pencil: Exercise 8: Download the protein sequences
@@ -467,9 +468,31 @@ tlr9 frog XP_XXXXXXXXX.X
 ```bash
 #Paste the commands you used:
 
+#Check for NP_ protein IDs
+for SPECIES in mouse chicken frog zebrafish
+do
+    for GENE in tp53 aim2 tlr9 tlr21 gulo
+    do
+        if [ -s ${GENE}_${SPECIES}.gtf ]
+        then
+            PROTEIN=$(grep -o 'protein_id "NP_[^"]*"' ${GENE}_${SPECIES}.gtf | head -n 1 | awk -F'"' '{print $2}')
+            echo "${GENE} ${SPECIES} ${PROTEIN}"
+        fi
+    done
+done > protein_list.txt
 
-
-
+#Check for XP_ protein IDs
+for SPECIES in mouse chicken frog zebrafish
+do
+    for GENE in tp53 aim2 tlr9 tlr21 gulo
+    do
+        if [ -s ${GENE}_${SPECIES}.gtf ]
+        then
+            PROTEIN=$(grep -o 'protein_id "XP_[^"]*"' ${GENE}_${SPECIES}.gtf | head -n 1 | awk -F'"' '{print $2}')
+            echo "${GENE} ${SPECIES} ${PROTEIN}"
+        fi
+    done
+done >> protein_list.txt
 ```
 
 2. Move to `analysis/proteins/` and download all the protein sequences **in a single `while read` loop**, like the chromosome 21 exercise.
@@ -488,6 +511,11 @@ done < ../gene_survey/protein_list.txt
 ```bash
 #Paste your command loop here:
 
+while read -r gene species accession
+do
+    curl -o "${gene}_${species}.faa" "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi?db=protein&id=${accession}&rettype=fasta&retmode=text"
+    sleep 1
+done < ../gene_survey/protein_list.txt
 
 
 
@@ -505,7 +533,7 @@ Example:
 ```
 Type your answer
 
-
+cat takes everything that shares the same condition and compiles it all into one file 
 
 ```
 
@@ -525,7 +553,7 @@ We want to know if a gene exists in a **genome**, even if nobody annotated it.
 ```
 Type your answer:
 
-
+We need to do tblastn because we searching for nucleotides based on the protein sequence we already have. blastp would compare a protein query to a protein database. 
 
 
 ```
@@ -535,6 +563,7 @@ Type your answer:
 ```
 Type your answer:
 
+The same protein can be encoded by varying DNA sequences since the many amino acids have multiple 3 nucleotide codes. Searching for a DNA sequence would not give all the results for the same functional proteins. 
 
 
 ```
@@ -550,16 +579,16 @@ Run one search for every `NOT_FOUND` in your survey table (Exercise 7). As query
 
 | # | Gene | Query (protein file) | Search in… | % Identity | Query cover | E-value | Present or Absent? |
 |---|---|---|---|---|---|---|---|
-| 1 | TP53 | `tp53_chicken.faa` | mouse | | | | |
-| 2 | AIM2 | `aim2_mouse.faa` | chicken | | | | |
-| 3 | AIM2 | `aim2_mouse.faa` | frog | | | | |
-| 4 | AIM2 | `aim2_mouse.faa` | zebrafish | | | | |
-| 5 | TLR9 | `tlr9_mouse.faa` | chicken | | | | |
-| 6 | TLR21 | `tlr21_chicken.faa` | mouse | | | | |
-| 7 | TLR21 | `tlr21_chicken.faa` | frog | | | | |
-| 8 | GULO | `gulo_mouse.faa` | chicken | | | | |
-| 9 | GULO | `gulo_mouse.faa` | frog | | | | |
-| 10 | GULO | `gulo_mouse.faa` | zebrafish | | | | |
+| 1 | TP53 | `tp53_chicken.faa` | mouse | 69.1% | 56% | 4e-67 |PRESENT|
+| 2 | AIM2 | `aim2_mouse.faa` | chicken | | | |ABSENT|
+| 3 | AIM2 | `aim2_mouse.faa` | frog | | | |ABSENT|
+| 4 | AIM2 | `aim2_mouse.faa` | zebrafish | | | |ABSENT|
+| 5 | TLR9 | `tlr9_mouse.faa` | chicken | 34.97% | 96 | 1e-172 | PRESENT |
+| 6 | TLR21 | `tlr21_chicken.faa` | mouse | 29.65% | 93% | 1e-99 | PRESENT |
+| 7 | TLR21 | `tlr21_chicken.faa` | frog | 43.11% | 93% | 0 | PRESENT |
+| 8 | GULO | `gulo_mouse.faa` | chicken | 54% | 75.95%| 2e-133 | PRESENT |
+| 9 | GULO | `gulo_mouse.faa` | frog | 70.23% | 100% | 0 | PRESENT|
+| 10 | GULO | `gulo_mouse.faa` | zebrafish | 31.93% | 27% | 3e-10 | PRESENT|
 
 >[!IMPORTANT]
 > **A hit is not the same as the gene.** Proteins belong to families that share domains, so a TLR9 query will also find *other* Toll-like receptors. A real gene gives a hit that covers **most of the protein** (high query cover) with a **very small E-value**. A hit that covers only a small piece of the protein is usually just a shared domain from a different gene. Use search #1 (TP53) as your example of what a real hit looks like.
@@ -568,18 +597,18 @@ Run one search for every `NOT_FOUND` in your survey table (Exercise 7). As query
 
 | Gene | mouse | chicken | frog | zebrafish |
 |---|---|---|---|---|
-| TP53 | | | | |
-| AIM2 | | | | |
-| TLR9 | | | | |
-| TLR21 | | | | |
-| GULO | | | | |
+| TP53 | P | P | P | P |
+| AIM2 | P | A | A| A |
+| TLR9 | P | P | P | P |
+| TLR21 | P | P | P | P |
+| GULO | P | P | P | P |
 
 :question: Compare this table with your grep survey (Exercise 7). How many conclusions would have been **wrong** if you had stopped at the annotation file?
 
 ```
 Type your answer:
 
-
+A majority of the conclusions from just the annotation file were wrong. TP53, TLR9, TLR21, and GULO all had multiple conclusions that required more indepth comparison to determine if they were present or not. 
 
 
 ```
@@ -592,17 +621,50 @@ Type your answer:
 You have now done every step of this analysis by hand. Without writing any code, describe the full workflow. For each step, write: **what goes in, what comes out, and which command/tool does it.**
 
 ```
-Step 1:
-    Input:
-    Output:
-    Tool/command:
+Step 1: Make Directories 
+    Input: Make Directory 
+    Output: Each Directory 
+    Tool/command: mkdir -p 
 
-Step 2:
-    Input:
-    Output:
-    Tool/command:
+Step 2: Download the annotation files
+    Input: *.gtf.gz files 
+    Output: unzipped .gtf files 
+    Tool/command: curl -o and gunzip 
 
-(continue...)
+Step 3:soft link the files into the analysis directory 
+    Input: *.gtf files in the input directory
+    Output: .gtf files in analysis directory 
+    Tool/command: ln -s 
+
+Step 4: Count the genes 
+    Input: The .gtf files 
+    Output: counts of the genes in each file 
+    Tool/command: wc and awk 
+
+Step 5: Identify a single gene 
+    Input: *.gtf 
+    Output: GENE*.gtf 
+    Tool/command: grep -i and awk 
+
+Step 6: Repeat for all desired genes 
+    Input: *.gtf
+    Output: GENE*.gtf
+    Tool/command: grep -i 
+
+Step 7: Use a loop to determine if the gene is found in each species 
+    Input: *.gtf 
+    Output: GENE_SPECIES.gtf 
+    Tool/command: for, for, grep, echo, echo 
+
+Step 8: Download and read the protein sequence 
+    Input: *.gtf
+    Output: protein.txt and *.faa files 
+    Tool/command: grep -o, while read, and cat 
+
+Step 9: Run blast 
+    Input: *.faa
+    Output: nucleotide blast 
+    Tool/command: tblastn 
 
 
 

@@ -93,11 +93,18 @@ gunzip chr21.fa.gz
 # makeblastb 
 makeblastdb -in chr21.fa -dbtype nucl -out chr21_nucl
 
+while read -r GENE ID
+do
+    blastn -db $WORKDIR/$INPUTDIR/chr21_nucl -query $WORKDIR/$INPUTDIR/${GENE}.fasta -out $WORKDIR/$OUTPUTDIR/${GENE}_blast_out.tsv -outfmt 6 
 
-blastn -db chr21_nucl -query $INPUT -out ../$OUTPUTDIR/blast_out.txt
+done < 10_genes.txt
+
+# blastn -db chr21_nucl -query $INPUT -out ../$OUTPUTDIR/blast_out.txt
 
 
 ### Check your data 
 
 
 less ../$OUTPUTDIR/blast_out.txt 
+
+#making a loop 
